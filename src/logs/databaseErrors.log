@@ -1,3 +1,63 @@
-- Tue Jun 27 2023 15:20:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: undefined
-- Tue Jun 27 2023 15:22:03 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: error: inserción o actualización en la tabla «sensor_measurement» viola la llave foránea «fk_sensor»
-- Tue Jun 27 2023 15:24:28 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E00 ] error: inserción o actualización en la tabla «sensor_measurement» viola la llave foránea «fk_sensor»
+- Mon Jul 24 2023 09:57:45 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:45 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:45 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:45 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 09:57:46 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la relación «sensor_register»
+- Mon Jul 24 2023 10:26:20 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no existe la columna «name» en la relación «reg_sensor_1»
+- Mon Jul 24 2023 10:27:22 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no se pudo determinar el tipo del parámetro $4
+- Mon Jul 24 2023 10:28:03 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: no se pudo determinar el tipo del parámetro $4
+- Mon Jul 24 2023 10:29:08 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «(»
+- Mon Jul 24 2023 10:39:30 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «(»
+- Mon Jul 24 2023 10:42:03 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «(»
+- Mon Jul 24 2023 10:48:16 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: inserción o actualización en la tabla «reg_sensor_1» viola la llave foránea «fk_sensor»
+- Mon Jul 24 2023 11:12:44 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «(»
+- Mon Jul 24 2023 11:16:28 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: el mensaje de «bind» entrega 4 parámetros, pero la sentencia preparada «» requiere 5
+- Mon Jul 24 2023 11:18:09 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: el mensaje de «bind» entrega 4 parámetros, pero la sentencia preparada «» requiere 5
+- Mon Jul 24 2023 11:22:20 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «Insert»
+- Mon Jul 24 2023 11:22:35 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «$1»
+- Mon Jul 24 2023 11:23:45 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: error de sintaxis en o cerca de «$1»
+- Tue Jul 25 2023 13:05:02 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:05:02 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:05:42 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:05:42 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:05:56 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:05:56 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:06:19 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Tue Jul 25 2023 13:06:19 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] TypeError: Cannot read properties of undefined (reading 'rowCount')
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_1
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_2
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_9
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_10
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_11
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_12
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_13
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_14
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_15
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_16
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_17
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_18
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_19
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_20
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_3
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_4
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_5
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_6
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_7
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_8
+- Mon Jul 31 2023 10:27:38 GMT+0100 (hora de verano de Europa occidental) | MESSAGE: [ 0120C2E0 ] error: permiso denegado a la tabla reg_sensor_21

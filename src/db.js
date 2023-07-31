@@ -1,7 +1,8 @@
 const utils = require("./utils");
 const Pool = require("pg").Pool;
 require("dotenv").config();
-console.log();
+
+// Creamos el pool, con datos almacenados en el fichero .env
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DATABASETOKEN,
@@ -21,320 +22,114 @@ const connectionConfig = {
   password: process.env.DB_PASSWORD,
 };
 
-// Crea un nuevo cliente
+// Creación de un nuevo cliente y conexión al servidor de PostgreSQL
 const client = new Client(connectionConfig);
-
-// Conecta al servidor PostgreSQL
 async function connectDBClient() {
-  client.connect((err) => {
-    if (err) {
-      console.error("Error al conectar a la base de datos:", err);
-      utils.logWrite(
-        "Error al conectar a la base de datos",
-        "databaseAccess"
-      );
-    } else {
-      console.log("Conexión exitosa a la base de datos");
-      utils.logWrite(
-        "Conexión exitosa a la base de datos",
-        "databaseAccess"
-      );
-    }
-  });
-}
-
-function databaseOrchestrator(data) {
-  const jsonString = JSON.stringify(data);
-  if (true) {
-    let arr = getSensorData(jsonString);
+  try {
+    await client.connect();
+    console.log("Conexión exitosa a la base de datos");
+    utils.logWrite("Conexión exitosa a la base de datos", "databaseAccess");
+  } catch (error) {
+    console.error("Error al conectar a la base de datos:", error);
+    utils.logWrite("Error al conectar a la base de datos", "databaseAccess");
   }
 }
 
-async function getSensorData(dataString) {
-  await connectDBClient()
-  // Sacamos el id de la estacion
-  const regex =
-    /station\s*=\s*'([^']+)'\s\|\sdate=(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2})/;
-  const match = dataString.match(regex);
-  let stationId;
-  let dateTime;
-  if (match && match[1] && match[2]) {
-    stationId = match[1];
-    dateTime = match[2];
-  } else {
-    console.log("No se encontró la fecha y hora o el parámetro 'station'.");
-  }
-  const regex2 = /\((.*?)\)/; // Expresión regular para buscar el texto entre paréntesis
-  const coincidencia = dataString.match(regex2); // Buscar la coincidencia
-  if (coincidencia && coincidencia.length > 1) {
-    const rawText = coincidencia[1];
-    const sensors = rawText.split("|");
-    for (let i = 0; i < sensors.length; i++) {
-      const sensorData = sensors[i].split("|");
-      for (let j = 0; j < sensorData.length; j++) {
-        let res = [];
-        res.push(stationId);
-        res.push(dateTime);
-        const sensorValues = sensorData[j].split(";");
-        for (let x = 0; x < sensorValues.length - 1; x++) {
-          const value = sensorValues[x].split("=");
-          const regex = /'/g;
-          res.push(value[1].replace(regex, ""));
-        }
-        let sensorType = res[2];
-        sendSensorDataToDB(sensorType, res);
-      }
-    }
-  }
-}
+connectDBClient();
 
-async function sendSensorDataToDB(sensorType, sensorData) {
-  if (sensorType.includes("Solar Panel")) {
-    addSolarPanelMeasurement(sensorData)
-  }
-  if (sensorType.includes("Battery")) {
-    addBatteryMeasurement(sensorData)
-  }
-  if (sensorType.includes("EAG Soil moisture")) {
-    addSoilMoistureMeasurement(sensorData)
-  }
-  if (sensorType.includes("Volumetric Ionic Content")) {
-    addVolumetricIonicContentMeasurement(sensorData)
-  }
-  if (sensorType.includes("Soil temperature")) {
-    addTemperatureMoistureMeasurement(sensorData)
-  }
-}
-
-async function getFarms() {
-  await connectDBClient();
-  let res;
-  const query = "SELECT * FROM farm";
-  // Ejecuta la consulta
-  client.query(query, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-    } else {
-      res = result.rows;
-      console.log(res);
-      client.end();
-      return res;
-      //console.log(res)
-      // Aquí puedes realizar cualquier otra operación con los resultados obtenidos
-    }
-    // Cierra la conexión con la base de datos
-  });
-}
-
+// Método que obtiene todos los sensores de la BBDD
 async function getSensors() {
-  await connectDBClient();
-  let res;
-  const query = "SELECT * FROM sensor";
-  // Ejecuta la consulta
-  client.query(query, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-    } else {
-      res = result.rows;
-      console.log(res);
-      client.end();
-      return res;
-      //console.log(res)
-      // Aquí puedes realizar cualquier otra operación con los resultados obtenidos
-    }
-    // Cierra la conexión con la base de datos
-  });
-  //client.end();
+  try {
+    await connectDBClient();
+    let res;
+    const query = "SELECT * FROM sensor";
+    const result = await client.query(query);
+    res = result.rows;
+    client.end();
+    return res;
+  } catch (error) {
+    console.error("Error al ejecutar la consulta de los sensores:", error);
+    utils.logWrite("Error al ejecutar la consulta de los sensores.", "databaseAccess");
+  }
 }
 
-async function getMeasurements() {
-  await connectDBClient();
-  let res;
-  const query = "SELECT * FROM  sensor_register";
-  // Ejecuta la consulta
-  client.query(query, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-    } else {
-      res = result.rows;
-      console.log(res);
-      client.end();
-      return res;
-      //console.log(res)
-      // Aquí puedes realizar cualquier otra operación con los resultados obtenidos
+// Método que registra todos los sensores de tipo 1 en la BBDD
+async function addRegSensor1(arr, sensor_type) {
+  console.log(arr)
+  const serial = arr[0];
+  const name = arr[2];
+  const registered_date = arr[1];
+  const value = arr[5];
+  const unit = arr[3];
+  const insertQuery = `
+  WITH sensor_data AS (
+    SELECT s.id AS sensor_id
+    FROM sensor s
+    INNER JOIN station st ON s.station = st.id
+    WHERE st.serial = $1 AND s.name = $2
+    LIMIT 1
+  )
+  INSERT INTO reg_sensor_${sensor_type} (registered_date, sensor, value, unit)
+  SELECT $3, sensor_id, $4, $5
+  FROM sensor_data;
+`;
+  try {
+    const res = await client.query(insertQuery, [serial,name,registered_date,value,unit]);
+    //console.log(res)
+    if(res.rowCount > 0){
+      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito.");
+      utils.logWrite("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito", "databaseLogs");
+    }else{
+      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " no se ha podido insertar.");
+      utils.logWrite("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + "no se ha podido insertar.", "databaseLogs");
     }
-    // Cierra la conexión con la base de datos
-  });
+    
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+    utils.logWrite("Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log.", "databaseLogs");
+    utils.logWrite("[ " + arr[0] + " ] " + error, "databaseErrors");
+  }
 }
 
-async function addSolarPanelMeasurement(arr) {
-  //await connectDBClient();
-  let res;
-  const query =
-    "Insert into sensor_measurement(serial, registered, name, unit, chanel, value) values ($1, $2, $3,$4, $5, $6);";
-  const values = [arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]];
-  client.query(query, values, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-      utils.logWrite(
-        "Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log. " ,
-        "databaseLogs"
-      );
-      utils.logWrite("[ " + arr[0] + " ] " + err ,
-      "databaseErrors")
+// Método que registra todos los sensores de tipo 2 en la BBDD
+async function addRegSensor3(arr, sensor_type) {
+  const serial = arr[0];
+  const name = arr[2];
+  const registered_date = arr[1];
+  const average = arr[5];
+  const maximum = arr[6];
+  const minimum = arr[7];
+  const unit = arr[3];
+  const insertQuery = `
+  WITH sensor_data AS (
+    SELECT s.id AS sensor_id
+    FROM sensor s
+    INNER JOIN station st ON s.station = st.id
+    WHERE st.serial = $1 AND s.name = $2
+    LIMIT 1
+  )
+  INSERT INTO reg_sensor_${sensor_type} (registered_date, sensor, average, minimum, maximum, unit)
+  SELECT $3, sensor_id, $4, $5, $6, $7
+  FROM sensor_data;
+`;
+  try {
+    const res = await client.query(insertQuery, [serial,name,registered_date,average,minimum,maximum,unit]);
+    if (res.rowCount > 0) {
+      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito.");
+      utils.logWrite("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito", "databaseLogs");
     } else {
-      res = result.rows;
-      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito");
-      utils.logWrite(
-        "Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito",
-        "databaseLogs"
-      );
+      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " no se ha insertado. Revise la llamada.");
+      utils.logWrite("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " no se ha insertado", "databaseLogs");
     }
-  });
-}
-
-async function addBatteryMeasurement(arr) {
-  //await connectDBClient();
-  let res;
-  const query =
-    "Insert into sensor_measurement(serial, registered, name, unit, chanel, value) values ($1, $2, $3,$4, $5, $6);";
-  const values = [arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]];
-  client.query(query, values, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-      utils.logWrite(
-        "Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log. " ,
-        "databaseLogs"
-      );
-      utils.logWrite("[ " + arr[0] + " ] " + err ,
-      "databaseErrors")
-    } else {
-      res = result.rows;
-      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito");
-      utils.logWrite(
-        "Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito",
-        "databaseLogs"
-      );
-    }
-  });
-}
-
-async function addSoilMoistureMeasurement(arr) {
-  //await connectDBClient();
-  let res;
-  const query =
-    "Insert into sensor_measurement(serial, registered, name, unit, chanel, average) values ($1, $2, $3,$4, $5, $6);";
-  const values = [arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]];
-  client.query(query, values, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-      utils.logWrite(
-        "Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log. " ,
-        "databaseLogs"
-      );
-      utils.logWrite("[ " + arr[0] + " ] " + err ,
-      "databaseErrors")
-    } else {
-      res = result.rows;
-      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito");
-      utils.logWrite(
-        "Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito",
-        "databaseLogs"
-      );
-    }
-  });
-}
-
-async function addTemperatureMoistureMeasurement(arr) {
-  //await connectDBClient();
-  let res;
-  const query =
-    "Insert into sensor_measurement(serial, registered, name, unit, chanel, average, maximum, minimum) values ($1, $2, $3,$4, $5, $6, $7, $8);";
-  const values = [
-    arr[0],
-    arr[1],
-    arr[2],
-    arr[3],
-    arr[4],
-    arr[5],
-    arr[6],
-    arr[7],
-  ];
-  client.query(query, values, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-      utils.logWrite(
-        "Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log. " ,
-        "databaseLogs"
-      );
-      utils.logWrite("[ " + arr[0] + " ] " + err ,
-      "databaseErrors")
-    } else {
-      res = result.rows;
-      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito");
-      utils.logWrite(
-        "Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito",
-        "databaseLogs"
-      );
-    }
-  });
-}
-
-async function addVolumetricIonicContentMeasurement(arr) {
-  //await connectDBClient();
-  let res;
-  const query =
-    "Insert into sensor_measurement(serial, registered, name, unit, chanel, average) values ($1, $2, $3,$4, $5, $6);";
-  const values = [arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]];
-  client.query(query, values, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-      utils.logWrite(
-        "Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log. " ,
-        "databaseLogs"
-      );
-      utils.logWrite("[ " + arr[0] + " ] " + err ,
-      "databaseErrors")
-    } else {
-      res = result.rows;
-      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito");
-      utils.logWrite(
-        "Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito",
-        "databaseLogs"
-      );
-    }
-  });
-}
-
-async function addDiameterMeasurement(station, arr) {
-  //await connectDBClient();
-  let res;
-  const query =
-    "Insert into sensor_register(name, registered, serial, code, chanel, unit) values ($1, $2, $3,$4, $5, $6);";
-  const values = [arr[0], arr[10], arr[8], arr[6], arr[5], arr[4]];
-  client.query(query, values, (err, result) => {
-    if (err) {
-      console.error("Error al ejecutar la consulta:", err);
-      utils.logWrite(
-        "Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log. " ,
-        "databaseLogs"
-      );
-      utils.logWrite("[ " + arr[0] + " ] " + err ,
-      "databaseErrors")
-    } else {
-      res = result.rows;
-      console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito");
-      utils.logWrite(
-        "Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " insertado con éxito",
-        "databaseLogs"
-      );
-    }
-  });
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+    utils.logWrite("Error al insertar en la base de datos el registro del sensor '" + arr[2] + "' de la estación " + arr[0] + ". Más información en databaseErrors.log.", "databaseLogs");
+    utils.logWrite("[ " + arr[0] + " ] " + error, "databaseErrors");
+  }
 }
 
 module.exports = {
-  databaseOrchestrator,
-  getFarms,
   getSensors,
-  getMeasurements,
+  addRegSensor1,
+  addRegSensor3,
 };
