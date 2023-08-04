@@ -5,6 +5,7 @@ const fs = require("fs");
 //const cron = require('node-cron');
 //const path = require('path');
 require("dotenv").config();
+const db_user = process.env.DB_USER
 
 var publicDir = require("path").join(__dirname, "/public");
 app.use(express.static(publicDir));
@@ -35,38 +36,21 @@ const db = require("./db");
 
 app.listen(process.env.PORT || 5000, async function () {
   await init();
-  console.log("Server is live on port 5000");
+  console.log("Servidor ejecutándose en el puerto 5000");
 });
 
 const init = async () => {
-  console.log("HAL is waking up...");
+  //console.log("HAL is waking up...");
 };
 
 // ********************  ENDPOINTS  ********************
-app.post("/register", (req, res) => {
+app.post("/dataRegister", (req, res) => {
   if (req.body.headers.Authorization != "Bearer " + databaseToken) {
-    utils.logWrite("Error en la autenticación para el POST", "databasePost");
+    utils.logWrite("Error en la autenticación para el POST. Se ha intentado hacer una escritura en base de datos con una contraseña inválida.", "databaseLogs");
     return res.status(403).json({ error: "Credentials Error" });
   } else {
-    utils.logWrite(
-      "Acceso en la BBDD para la escritura de registros...",
-      "databasePost"
-    );
+    
     databaseOrchestrator(req.body.message);
-    res.status(200).send("OK");
-  }
-});
-
-app.post("/meteoStationRegister", (req, res) => {
-  if (req.body.headers.Authorization != "Bearer " + databaseToken) {
-    utils.logWrite("Error en la autenticación para el POST", "databasePost");
-    return res.status(403).json({ error: "Credentials Error" });
-  } else {
-    utils.logWrite(
-      "Acceso en la BBDD para la escritura de registros...",
-      "databasePost"
-    );
-    db.meteoStationOrchestrator(req.body.message);
     res.status(200).send("OK");
   }
 });
@@ -95,10 +79,14 @@ async function getSensorData(dataString) {
     stationId = match[1];
     dateTime = match[2];
   } else {
-    console.log("No se encontró la fecha y hora o el parámetro 'station'.");
+    //console.log("No se encontró la fecha y hora o el parámetro 'station'.");
   }
   const regex2 = /\((.*?)\)/; // Expresión regular para buscar el texto entre paréntesis
   const coincidencia = dataString.match(regex2); // Buscar la coincidencia
+  utils.logWrite(
+    "Acceso en la BBDD para la escritura de registros de la estación " + stationId + " con el usuario " + db_user,
+    "databaseAccess"
+  );
   if (coincidencia && coincidencia.length > 1) {
     const rawText = coincidencia[1];
     const sensors = rawText.split("|");
@@ -131,22 +119,22 @@ async function sendSensorDataToDB(sensorType, sensorData) {
       db.addRegSensor1(sensorData, 2);
       break;
     case "Soil temperature 1":
-      db.addRegSensor3(sensorData, 3);
+      db.addRegSensor2(sensorData, 3);
       break;
     case "Soil temperature 2":
-      db.addRegSensor3(sensorData, 4);
+      db.addRegSensor2(sensorData, 4);
       break;
     case "Soil temperature 3":
-      db.addRegSensor3(sensorData, 5);
+      db.addRegSensor2(sensorData, 5);
       break;
     case "Soil temperature 4":
-      db.addRegSensor3(sensorData, 6);
+      db.addRegSensor2(sensorData, 6);
       break;
     case "Soil temperature 5":
-      db.addRegSensor3(sensorData, 7);
+      db.addRegSensor2(sensorData, 7);
       break;
     case "Soil temperature 6":
-      db.addRegSensor3(sensorData, 8);
+      db.addRegSensor2(sensorData, 8);
       break;
     case "EAG Soil moisture 1":
       db.addRegSensor3(sensorData, 9);
@@ -185,7 +173,7 @@ async function sendSensorDataToDB(sensorType, sensorData) {
       db.addRegSensor3(sensorData, 20);
       break;
     case "Diameter":
-      db.addRegSensor3(sensorData, 21);
+      db.addRegSensor2(sensorData, 21);
       break;
     case "Diameter Ekomatic":
       db.addRegSensor1(sensorData, 22);
@@ -217,4 +205,5 @@ async function sendSensorDataToDB(sensorType, sensorData) {
   }
   
 }
+
 
