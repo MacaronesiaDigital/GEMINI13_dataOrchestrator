@@ -6685,3 +6685,9 @@
 - Fri Aug 04 2023 13:09:29 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF107 ] error: column "minimum" of relation "reg_sensor_28" does not exist
 - Fri Aug 04 2023 13:09:29 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF107 ] error: column "minimum" of relation "reg_sensor_27" does not exist
 - Fri Aug 04 2023 13:09:29 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF107 ] error: column "minimum" of relation "reg_sensor_28" does not exist
+- Mon Aug 07 2023 08:00:08 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF10 ] error: invalid input syntax for type double precision: "None"
+- Mon Aug 07 2023 08:00:08 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF10 ] error: invalid input syntax for type double precision: "None"
+- Mon Aug 07 2023 08:00:08 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF10 ] error: invalid input syntax for type double precision: "None"
+- Mon Aug 07 2023 08:00:08 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF10 ] error: invalid input syntax for type double precision: "None"
+- Mon Aug 07 2023 08:00:08 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF10 ] error: invalid input syntax for type double precision: "None"
+- Mon Aug 07 2023 08:00:08 GMT+0100 (Western European Summer Time) | MESSAGE: [ TF10 ] error: invalid input syntax for type double precision: "None"

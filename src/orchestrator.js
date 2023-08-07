@@ -62,10 +62,13 @@ app.get("/", (req, res) => {
 // Funcion para convertir el json en String y procesar los datos
 function databaseOrchestrator(data) {
   const jsonString = JSON.stringify(data);
-  if (true) {
-    let arr = getSensorData(jsonString);
+  if(jsonString.includes("Ecomatik")){
+    let arr = getSensorDataEcomatik(jsonString);
+  }else{
+    let arr = getSensorData(jsonString)
   }
 }
+
 
 // Función que procesa los datos del string y los convierte en un array para su posterior inserción en la BBDD
 async function getSensorData(dataString) {
@@ -97,7 +100,49 @@ async function getSensorData(dataString) {
         res.push(stationId);
         res.push(dateTime);
         const sensorValues = sensorData[j].split(";");
-        for (let x = 0; x < sensorValues.length - 1; x++) {
+        for (let x = 0; x < sensorValues.length-1; x++) {
+          const value = sensorValues[x].split("=");
+          const regex = /'/g;
+          res.push(value[1].replace(regex, ""));
+        }
+        let sensorType = res[2];
+        sendSensorDataToDB(sensorType, res);
+      }
+    }
+  }
+}
+
+// Función que procesa los datos del string y los convierte en un array para su posterior inserción en la BBDD de Ecomatik
+async function getSensorDataEcomatik(dataString) {
+  // Sacamos el id de la estacion
+  const regex =
+    /station\s*=\s*'([^']+)'\s\|\sdate=(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2})/;
+  const match = dataString.match(regex);
+  let stationId;
+  let dateTime;
+  if (match && match[1] && match[2]) {
+    stationId = match[1];
+    dateTime = match[2];
+  } else {
+    //console.log("No se encontró la fecha y hora o el parámetro 'station'.");
+  }
+  const regex2 = /\((.*?)\)/; // Expresión regular para buscar el texto entre paréntesis
+  const coincidencia = dataString.match(regex2); // Buscar la coincidencia
+  utils.logWrite(
+    "Acceso en la BBDD para la escritura de registros de la estación " + stationId + " con el usuario " + db_user,
+    "databaseAccess"
+  );
+  if (coincidencia && coincidencia.length > 1) {
+    const rawText = coincidencia[1];
+    const sensors = rawText.split("|");
+    for (let i = 0; i < sensors.length; i++) {
+      const sensorData = sensors[i].split("|");
+      for (let j = 0; j < sensorData.length; j++) {
+        let res = [];
+        res.push(stationId);
+        res.push(dateTime);
+        const sensorValues = sensorData[j].split(";");
+        for (let x = 0; x < sensorValues.length; x++) {
           const value = sensorValues[x].split("=");
           const regex = /'/g;
           res.push(value[1].replace(regex, ""));
@@ -175,8 +220,11 @@ async function sendSensorDataToDB(sensorType, sensorData) {
     case "Diameter":
       db.addRegSensor2(sensorData, 21);
       break;
-    case "Diameter Ekomatic":
-      db.addRegSensor1(sensorData, 22);
+    case "dendrometer Ecomatik 1":
+      db.addRegSensor4(sensorData, 22);
+      break;
+    case "dendrometer Ecomatik 2":
+      db.addRegSensor4(sensorData, 22);
       break;
     case "Radiation SiAR":
       db.addRegSensor1(sensorData, 23);
@@ -191,10 +239,10 @@ async function sendSensorDataToDB(sensorType, sensorData) {
       db.addRegSensor1(sensorData, 26);
       break;
     case "Temperature SiAR":
-      db.addRegSensor3(sensorData, 27);
+      db.addRegSensor2(sensorData, 27);
       break;
     case "Humidity SiAR":
-      db.addRegSensor3(sensorData, 28);
+      db.addRegSensor2(sensorData, 28);
       break;
     case "Et0 SiAR":
       db.addRegSensor1(sensorData, 29);
@@ -203,7 +251,4 @@ async function sendSensorDataToDB(sensorType, sensorData) {
       db.addRegSensor1(sensorData, 30);
       break;
   }
-  
 }
-
-
