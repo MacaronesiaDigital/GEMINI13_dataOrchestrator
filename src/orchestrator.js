@@ -115,6 +115,9 @@ async function getSensorData(dataString) {
 // Función que procesa los datos del string y los convierte en un array para su posterior inserción en la BBDD de Ecomatik
 async function getSensorDataEcomatik(dataString) {
   // Sacamos el id de la estacion
+  console.log(dataString)
+  dataString = dataString.replace("'|d", "' | d" )
+  console.log(dataString)
   const regex =
     /station\s*=\s*'([^']+)'\s\|\sdate=(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2})/;
   const match = dataString.match(regex);
@@ -148,6 +151,7 @@ async function getSensorDataEcomatik(dataString) {
           res.push(value[1].replace(regex, ""));
         }
         let sensorType = res[2];
+        console.log(res)
         sendSensorDataToDB(sensorType, res);
       }
     }
@@ -239,10 +243,10 @@ async function sendSensorDataToDB(sensorType, sensorData) {
       db.addRegSensor1(sensorData, 26);
       break;
     case "Temperature SiAR":
-      db.addRegSensor2(sensorData, 27);
+      db.addRegSensor3(sensorData, 27);
       break;
     case "Humidity SiAR":
-      db.addRegSensor2(sensorData, 28);
+      db.addRegSensor3(sensorData, 28);
       break;
     case "Et0 SiAR":
       db.addRegSensor1(sensorData, 29);

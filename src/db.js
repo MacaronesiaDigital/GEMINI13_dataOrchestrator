@@ -149,6 +149,7 @@ async function addRegSensor3(arr, sensor_type) {
 
 // Método que registra todos los sensores de tipo 4 en la BBDD (Ecomatik)
 async function addRegSensor4(arr, sensor_type) {
+	console.log(arr[0])
   const serial = arr[0];
   const name = arr[2];
   const registered_date = arr[1];
@@ -165,7 +166,7 @@ async function addRegSensor4(arr, sensor_type) {
       console.log("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + " no se ha insertado. Revise el log de errores (databaseErrors.log).");
       utils.logWrite("Registro del sensor '" + arr[2] + "' de la estación " + arr[0] + "no se ha podido insertar. Revise el log de errores (databaseErrors.log).", "databaseLogs");
       utils.logWrite("Intento de registro de datos de la estación " + arr[0] + ". Compruebe que la estación introducida se encuentra en la base de datos y que los datos a registrar son correctos en failedDatabaseQueries.log", "databaseErrors");
-      utils.logWrite("DB QUERY: " + insertQuery + "| VALORES QUERY: " + [serial,name,registered_date,average,unit], "failedDatabaseQueries");
+      utils.logWrite("DB QUERY: " + insertQuery + "| VALORES QUERY: " + [serial,name,registered_date,value,unit], "failedDatabaseQueries");
     }
   } catch (error) {
     console.error("Error al ejecutar la consulta:", error);
